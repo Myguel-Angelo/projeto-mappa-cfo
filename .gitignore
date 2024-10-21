@@ -4,6 +4,7 @@
 __pycache__
 db.sqlite3
 static/
+staticfiles/
 media/
 project/local_settings.py
 gunicorn-error-log
