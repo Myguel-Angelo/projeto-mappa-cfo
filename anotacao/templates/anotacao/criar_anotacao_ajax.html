@@ -52,6 +52,7 @@
             success: function(response) {
                 if (response.success) {
                     $('#modalAnotacao').hide();  // Fechar o modal
+                    location.reload();
                 } else {
                     $('#modal-body').html(response.html_form);  // Atualizar o modal com erros, se houver
                 }
