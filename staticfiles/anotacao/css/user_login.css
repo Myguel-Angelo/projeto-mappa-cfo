@@ -1,0 +1,165 @@
+/* Definindo um estilo global para todas as páginas */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Estilo básico para o corpo */
+body {
+    background: linear-gradient(45deg, rgb(27, 95, 126), rgb(19, 65, 87));
+    background-size: 400% 400%; /* Aumenta o tamanho do gradiente para permitir a animação */
+    animation: gradient 20s ease infinite;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f5f5f5;
+}
+
+@keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Contêiner principal das páginas de login e alteração de senha */
+.form-container {
+    background-color: white;
+    padding: 40px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    max-width: 400px;
+    width: 100%;
+}
+
+/* Títulos das páginas */
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Estilo para rótulos de formulários (labels) */
+label {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* Contêiner para inputs com ícones de visibilidade */
+.input-container {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+/* Estilo para os inputs (campos de texto e senha) */
+input {
+    width: 100%;
+    padding: 10px;
+    padding-right: 40px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+input:focus {
+    border-color: #036997;
+}
+
+/* Ícone de visibilidade de senha (olho) */
+i {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #666;
+}
+
+/* Estilo dos botões */
+/* Restante do CSS continua igual */
+
+/* Estilo dos botões */
+button, .btn-cancel {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    margin-bottom: 10px; /* Adiciona margem para evitar sobreposição */
+}
+
+/* Específico para o botão cancelar */
+.btn-cancel {
+    background-color: #ddd;
+    color: #333;
+}
+
+.btn-cancel:hover {
+    background-color: #bbb;
+}
+
+/* Se os botões de 'Salvar' e 'Cancelar' precisarem ser colocados lado a lado */
+.button-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.button-container button, 
+.button-container .btn-cancel {
+    width: 48%; /* Dividimos o espaço entre os botões */
+    margin-bottom: 0; /* Remove a margem inferior para evitar gap extra */
+}
+
+button {
+    background: linear-gradient(45deg, rgb(21, 166, 233), rgb(19, 65, 87));
+    background-size: 400% 400%; /* Aumenta o tamanho do gradiente para permitir a animação */
+    animation: gradient 10s ease infinite;
+    color: white;
+    border: none;   
+    transition: transform 0.3s ease;
+}
+
+button:hover {
+    transform: scale(1.05); 
+}
+
+/* Estilos para mensagens de sucesso ou erro */
+.messages {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.messages li {
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    color: white;
+    font-size: 14px;
+}
+
+.messages li.success {
+    background-color: #4CAF50;
+}
+
+.messages li.error {
+    background-color: #f44336;
+}
+
+.errorlist {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 15px;
+}
+
+.errorlist li {
+    color: #f44336;
+}

@@ -1,0 +1,135 @@
+/* Container geral */
+.cadetes-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    background-color: var(--secundary-color);
+    margin-bottom: 2rem;
+    width: 100%;
+    max-width: 100rem; /* Limita a largura máxima do container */
+    margin: 0 auto; /* Centraliza o container */
+}
+
+/* Título principal */
+.titulo-principal {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* Estilo do formulário de filtro */
+.filter-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+    width: 100%;
+    max-width: 800px; /* Limita a largura do formulário */
+    flex-wrap: wrap; /* Permite que os elementos quebrem linha em telas menores */
+}
+
+.filter-form label {
+    font-size: 1.6rem;
+    padding-right: 1rem;
+}
+
+.filter-form select {
+    margin-right: 1rem;
+    padding: 0.8rem;
+    font-size: 1.6rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ccc;
+}
+
+.filter-btn {
+    padding: 0.6rem 1rem;
+    margin-left: 1re;
+    font-size: 1.6rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.filter-btn:hover {
+    background-color: #1e2b5f;
+}
+
+/* Estilo da tabela */
+.table-wrapper {
+    min-width: 40rem;
+    width: 100%;
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 2rem; /* Espaçamento acima da tabela */
+}
+
+.cadetes-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.cadetes-table thead {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.cadetes-table th, .cadetes-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+    font-size: 1.6rem;
+}
+
+/* Ajuste da coluna de Ações */
+.cadetes-table td:last-child {
+    width: 1%; /* Garante que a coluna de ações ocupe o mínimo possível */
+}
+
+/* Botão de "Anotar" */
+.anotar-btn {
+    padding: 0.5rem 1rem;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.anotar-btn:hover {
+    background-color: #c82333;
+}
+
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .titulo-principal {
+        font-size: 2rem;
+    }
+
+    .filter-form label, .filter-form select, .filter-btn {
+        font-size: 1.5rem;
+    }
+    .cadetes-table th, .cadetes-table td {
+        font-size: 1.4rem;
+    }
+
+    .table-wrapper {
+        max-width: 100%;
+        min-width: 20rem;
+    }
+    .cadetes-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 2rem;
+        background-color: var(--secundary-color);
+        margin-bottom: 2rem;
+        width: 100%;
+        margin: 0 auto; /* Centraliza o container */
+    }
+}

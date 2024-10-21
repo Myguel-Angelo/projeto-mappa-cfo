@@ -1,0 +1,77 @@
+<div class="modal-header">
+    <h2>Despachar Anotação de {{ anotacao.cadete_anotado.nome }}</h2>
+</div>
+
+<div class="modal-body">
+    <form method="post" id="despachoForm">
+        {% csrf_token %}
+        
+        {% if anotacao.tipo_anotacao == 'negativa' %}
+            <!-- Formulário para Anotação Negativa -->
+            <label for="despacho"> O que o cadete irá cumprir   :</label>
+            <select name="despacho" id="despacho" onchange="toggleOutroInput()">
+                <option value="pernoite">Pernoite</option>
+                <option value="revista">Revista</option>
+                <option value="outros">Outros</option>
+            </select>
+            <br><br>
+
+            <div id="outroDespachoContainer" style="display: none;">
+                <label for="outroDespacho">Qual será o tipo de despacho?</label>
+                <input type="text" id="outroDespacho" name="outroDespacho">  <!-- O nome deve ser 'outroDespacho' -->
+            </div>
+
+            <label for="data_cumprimento">Data do Cumprimento:</label>
+            <input type="date" id="data_cumprimento" name="data_cumprimento" required>
+
+        {% elif anotacao.tipo_anotacao == 'positiva' %}
+            <!-- Formulário para Anotação Positiva -->
+            <label for="anotacao_negativa_id">Abonar uma anotação negativa (opcional):</label>
+            <select name="anotacao_negativa_id" id="anotacao_negativa_id">
+                <option value="">Nenhuma</option>
+                {% for neg_anotacao in anotacoes_negativas %}
+                    <option value="{{ neg_anotacao.id }}">
+                        {{ neg_anotacao.criado_por.cargo }} {{ neg_anotacao.criado_por.nome }}, Motivo: {{ neg_anotacao.motivo }}.
+                    </option>
+                {% endfor %}
+            </select>
+        {% endif %}
+
+        <br><br>
+        <button type="submit" class="btn-submit">Concluir Despacho</button>
+    </form>
+</div>
+
+<script>
+    // Submeter o formulário via AJAX
+    $('#despachoForm').on('submit', function(event) {
+        event.preventDefault();
+
+        $.ajax({
+            url: "{% url 'despachar_anotacao_ajax' anotacao.id %}",
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function(response) {
+                if (response.success) {
+                    $('#modalDespacho').hide();  // Fechar o modal
+                    location.reload();  // Recarrega a página atual
+                } else {
+                    $('#modal-body').html(response.html_form);  // Recarregar o modal com os erros
+                }
+            }
+        });
+    });
+
+    function toggleOutroInput() {
+        const despachoSelect = document.getElementById('despacho');
+        const outroDespachoContainer = document.getElementById('outroDespachoContainer');
+        
+        if (despachoSelect.value === 'outros') {
+            outroDespachoContainer.style.display = 'block'; // Exibir o campo de texto
+            outroDespachoInput.setAttribute('required', 'required');
+        } else {
+            outroDespachoContainer.style.display = 'none'; // Ocultar o campo de texto
+            outroDespachoInput.removeAttribute('required');
+        }
+    }
+</script>

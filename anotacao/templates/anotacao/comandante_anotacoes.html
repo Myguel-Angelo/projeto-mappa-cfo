@@ -1,0 +1,145 @@
+{% extends "anotacao/home.html" %}
+
+{% block title %}{{ block.super }}Gerenciar Anotações{% endblock title %}
+{% block includes %}
+    {{ block.super }}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% endblock includes %}
+
+{% block link_style %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static "anotacao/css/anotacoes.css" %}">
+    <link rel="stylesheet" href="{% static "anotacao/css/despachar.css" %}">
+{% endblock link_style %}
+
+{% block nav_bar %}
+    {{ block.super }}
+{% endblock nav_bar %}
+
+{% block main_content %}
+    <div class="comandante-anotacoes-container">
+        <h2 class="titulo-principal">Gerenciar Anotações dos Cadetes</h2>
+
+        {% if anotacoes %}
+
+            <!-- Formulário de filtro de turma -->
+            <form method="get" class="form-filtro">
+                <label for="turma">Filtrar por Turma:</label>
+                <select name="turma" id="turma">
+                    <option value="">Todas</option>
+                    {% for turma in turmas %}
+                        <option value="{{ turma.id }}" {% if turma.id|stringformat:"s" == turma_selecionada %}selected{% endif %}>
+                            {{ turma.turma }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn-filtro">Filtrar</button>
+            </form>
+
+            <div class='table-container'>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Anotado</th>
+                            <th>Turma</th>
+                            <th>Tipo de Anotação</th>
+                            <th>Quem Anotou</th>
+                            <th>Motivo</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for anotacao in anotacoes %}
+                            <tr>
+                                <td>{{ anotacao.cadete_anotado.nome }}</td>
+                                <td>{{ anotacao.cadete_anotado.turma.turma }}</td>
+                                <td>
+                                    {% if anotacao.tipo_anotacao == 'positiva' %}
+                                        Positiva
+                                    {% else %}
+                                        Negativa
+                                    {% endif %}
+                                </td>
+                                <td>{{ anotacao.criado_por.cargo }} {{ anotacao.criado_por.nome }}</td>
+                                <td>{{ anotacao.motivo }}</td>
+                                <td>
+                                    <button class="despacho-btn" data-anotacao-id="{{ anotacao.id }}">Despachar</button>
+                                    <button class="excluir-btn" data-anotacao-id="{{ anotacao.id }}">Excluir</button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <h2>Nenhuma anotação para despachar!</h2>
+        {% endif %}
+        
+        <!-- Modal para despacho de anotação -->
+        <div id="modalDespacho" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span style="cursor: pointer;" class="close">&times;</span>
+                <div id="modal-body">
+                    <!-- O formulário será carregado aqui -->
+                </div>
+            </div>
+        </div>
+        
+        <script>
+            $(document).ready(function() {
+                // Quando o botão de despacho for clicado
+                $('.despacho-btn').on('click', function() {
+                    const anotacaoId = $(this).data('anotacao-id');
+                    console.log("Botão clicado! ID da anotação: ", anotacaoId);
+            
+                    // Fazer uma requisição AJAX para carregar o formulário
+                    $.get("{% url 'despachar_anotacao_ajax' 0 %}".replace('0', anotacaoId), function(response) {
+                        $('#modal-body').html(response.html_form);  // Inserir o formulário no modal
+                        $('#modalDespacho').show();  // Exibir o modal
+                    }).fail(function() {
+                        console.error("Falha ao carregar o formulário.");  // Caso a requisição falhe
+                    });
+                });
+            
+                // Fechar o modal
+                $('.close').on('click', function() {
+                    $('#modalDespacho').hide();
+                });
+            });
+
+            $(document).ready(function() {
+                // Quando o botão de excluir for clicado
+                $('.excluir-btn').on('click', function() {
+                    const anotacaoId = $(this).data('anotacao-id');  // Captura o ID da anotação
+            
+                    // Pergunta ao usuário se deseja realmente excluir
+                    if (confirm('Você realmente deseja excluir esta anotação?')) {
+                        $.ajax({
+                            url: "{% url 'excluir_anotacao' 0 %}".replace('0', anotacaoId),  // URL para exclusão
+                            type: 'POST',  // Mudar para POST
+                            headers: {
+                                'X-CSRFToken': '{{ csrf_token }}'  // Adiciona o token CSRF ao cabeçalho
+                            },
+                            data: {
+                                'delete': true  // Um campo que indica que esta é uma exclusão
+                            },
+                            success: function(response) {
+                                if (response.success) {
+                                    alert('Anotação excluída com sucesso!');
+                                    location.reload(); 
+                                } else {
+                                    alert('Ocorreu um erro ao excluir a anotação.'); 
+                                }
+                            },
+                            error: function() {
+                                alert('Falha ao comunicar com o servidor.'); 
+                            }
+                        });
+                    }
+                });
+            });
+        </script>
+    </div>
+</body>
+</html>
+{% endblock main_content %}

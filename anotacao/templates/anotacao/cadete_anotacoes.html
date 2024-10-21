@@ -1,0 +1,78 @@
+{% extends "anotacao/home.html" %}
+
+{% block title %}{{ block.super }}Minhas Anotações{% endblock title %}
+
+{% block includes %}{{ block.super }}{% endblock includes %}
+
+{% block link_style %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static "anotacao/css/cadete_anotacoes.css" %}">
+{% endblock link_style %}
+
+{% block nav_bar %}
+    {{ block.super }}
+{% endblock nav_bar %}
+
+{% block main_content %}
+    <div class="anotacoes-container">
+        <h2 class="titulo-principal">Anotações de {{ usuario.nome }}</h2>
+
+        <div class="anotacoes-grid">
+            <!-- Coluna de Anotações Notificadas -->
+            <div class="anotacoes-coluna">
+                <h3 class="titulo-secao">Anotações Notificadas</h3>
+                <ul class="anotacoes-lista">
+                    {% for anotacao in anotacoes_notificadas %}
+                    <li class="anotacao-item" data-tipo="{{ anotacao.tipo_anotacao }}">
+                        Anotado 
+                        {% if anotacao.tipo_anotacao == 'positiva' %}
+                            Positivamente
+                        {% else %}
+                            Negativamente
+                        {% endif %}
+                        por 
+                        {% if anotacao.criado_por.cargo == 'Oficial_comandante' %}
+                            Oficial Comandante
+                        {% else %}
+                            {{ anotacao.criado_por.cargo }}
+                        {% endif %} 
+                        {{ anotacao.criado_por.nome }},
+                        Data e Hora: {{ anotacao.criada_em|date:"d/m/Y H:i" }}.
+                        Motivo: {{ anotacao.motivo }}.
+                    </li>
+                    {% empty %}
+                    <li class="anotacao-vazia">Nenhuma anotação notificada.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Linha divisória entre as colunas -->
+            <div class="anotacoes-divisoria"></div>
+
+            <!-- Coluna de Anotações Despachadas -->
+            <div class="anotacoes-coluna">
+                <h3 class="titulo-secao">Anotações Despachadas</h3>
+                <ul class="anotacoes-lista">
+                    {% for anotacao in anotacoes_despachadas %}
+                    <li class="anotacao-item" data-tipo="{{ anotacao.tipo_anotacao }}">
+                        Anotado 
+                        {% if anotacao.tipo_anotacao == 'positiva' %}
+                            Positivamente
+                        {% else %}
+                            Negativamente
+                        {% endif %}
+                        por {{ anotacao.criado_por.cargo }} {{ anotacao.criado_por.nome }},
+                        Data e Hora: {{ anotacao.criada_em|date:"d/m/Y H:i" }}.
+                        Motivo: {{ anotacao.motivo }}.
+                        <br>
+                        Despachada por Oficial Comandante {{ anotacao.despachado_por.nome }},
+                        O Cadete irá cumprir: {{ anotacao.despacho }}.
+                    </li>
+                    {% empty %}
+                    <li class="anotacao-vazia">Nenhuma anotação despachada.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock main_content %}

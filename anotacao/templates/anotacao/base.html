@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock title %}</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    {% load static %}
+    <link rel="shortcut icon" href="{% static 'anotacao/img/favicon.ico' %}" type="image/x-icon">
+    {% block includes %}{% endblock includes %}
+    {% block link_style %}{% endblock link_style %}
+    <script>
+        function toggleMenu() {
+            var nav = document.getElementById("nav-links");
+            nav.classList.toggle("show"); // Alterna entre mostrar/esconder o menu
+        }
+    </script>
+    
+</head>
+<body>
+    <aside class="menu">
+        <header class="nav-content menu-content">
+            <button class="menu-toggle" onclick="toggleMenu()">&#9776;</button>
+            <h1>
+                <a href="{% url 'home' %}">
+                    MAPPA
+                </a>
+            </h1>
+            <nav>
+                <ul id="nav-links" class="nav-links">
+                    {% block nav_bar %}{% endblock nav_bar %}
+                </ul>
+            </nav>
+        </header>
+    </aside>
+    <section>
+        <div class='main-content'>
+            {% block main_content %}{% endblock main_content %}
+        </div>
+    </section>
+    

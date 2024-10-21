@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAPPA - Login</title>
+    {% load static %}
+    <link rel="shortcut icon" href="{% static 'anotacao/img/favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'anotacao/css/user_login.css' %}">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Login</h2>
+
+        <!-- Exibe mensagens de erro ou sucesso -->
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{% if message.tags %}{{ message.tags }}{% endif %}">
+                        {{ message }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            <label for="id_nome_ou_numerica">Nome ou Numérica</label>
+            <div class="input-container">
+                {{ form.nome_ou_numerica }}
+            </div>
+
+            <label for="id_senha">Senha</label>
+            <div class="input-container">
+                {{ form.senha }}
+                <i class="fas fa-eye" id="togglePassword"></i>
+            </div>
+            
+            <button type="submit">Entrar</button>
+        </form>
+    </div>
+
+    <script>
+        // Toggle visibility for password
+        const togglePassword = document.querySelector('#togglePassword');
+        const senha = document.querySelector('#id_senha');
+
+        togglePassword.addEventListener('click', function () {
+            const type = senha.getAttribute('type') === 'password' ? 'text' : 'password';
+            senha.setAttribute('type', type);
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+    </script>
+</body>
+</html>

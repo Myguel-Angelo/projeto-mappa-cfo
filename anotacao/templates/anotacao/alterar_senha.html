@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAPPA - Alterar Senha</title>
+    {% load static %}
+    <link rel="shortcut icon" href="{% static 'anotacao/img/favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'anotacao/css/user_login.css' %}">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Alterar Senha</h2>
+
+        <!-- Exibe mensagens de erro ou sucesso -->
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{% if message.tags %}{{ message.tags }}{% endif %}">
+                        {{ message }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            
+            <!-- Exibe os erros não relacionados a um campo específico -->
+            {% if form.non_field_errors %}
+                <ul class="errorlist">
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            
+            <!-- Nova senha -->
+            <label for="nova_senha">Nova Senha</label>
+            <div class="input-container">
+                {{ form.nova_senha }}
+                <i class="fas fa-eye" id="togglePasswordNova"></i>
+            </div>
+        
+            <!-- Confirmar senha -->
+            <label for="confirmar_senha">Confirmar Senha</label>
+            <div class="input-container">
+                {{ form.confirmar_senha }}
+                <i class="fas fa-eye" id="togglePasswordConfirma"></i>
+            </div>
+        
+            <!-- Botões de ação -->
+            <div class="button-container">
+                <button type="submit">Salvar</button>
+                <a href="{% url 'home' %}" class="btn-cancel">Cancelar</a>
+            </div>
+
+    <script>
+        // Toggle visibility for nova senha
+        const togglePasswordNova = document.querySelector('#togglePasswordNova');
+        const novaSenha = document.querySelector('#id_nova_senha');
+
+        togglePasswordNova.addEventListener('click', function () {
+            const type = novaSenha.getAttribute('type') === 'password' ? 'text' : 'password';
+            novaSenha.setAttribute('type', type);
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+
+        // Toggle visibility for confirmar senha
+        const togglePasswordConfirma = document.querySelector('#togglePasswordConfirma');
+        const confirmarSenha = document.querySelector('#id_confirmar_senha');
+
+        togglePasswordConfirma.addEventListener('click', function () {
+            const type = confirmarSenha.getAttribute('type') === 'password' ? 'text' : 'password';
+            confirmarSenha.setAttribute('type', type);
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+    </script>
+</body>
+</html>

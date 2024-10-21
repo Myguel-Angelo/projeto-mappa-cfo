@@ -1,0 +1,52 @@
+{% extends "anotacao/base.html" %}
+
+{% block title %}MAPPA - {% endblock title %}
+
+{% block includes %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static "anotacao/css/base.css" %}">
+{% endblock includes %}
+
+{% block link_style %}
+    <link rel="stylesheet" href="{% static "anotacao/css/home.css" %}">
+{% endblock link_style %}
+
+{% block nav_bar %}
+    {{ block.super }}
+
+    {% if usuario.cargo == "Cadete" %}
+    <li><a href="{% url 'cadete_anotacoes' %}"><b><i class="fas fa-book"></i> Minhas Anotações</b></a></li>
+    {% endif %}
+
+    {% if usuario.cargo in 'Oficial_comandante' or usuario.cargo in 'Oficial' or usuario.permissao_anotar %}
+    <li><a href="{% url 'lista_cadetes' %}"><b><i class="fas fa-users"></i> Cadetes</b></a></li>
+    {% endif %}
+
+    {% if usuario.cargo == 'Oficial_comandante' %}
+    <li><a href="{% url 'comandante_anotacoes' %}"><b><i class="fas fa-file-alt"></i> Anotações</b></a></li>
+    <li><a href="{% url 'anotacoes_despachadas' %}" class="btn-acao"><b><i class="fas fa-file-export"></i> Exportar</b></a></li>
+    <li><a href="{% url 'historico_exportacoes' %}" class="btn-historico"><b><i class="fas fa-history"></i> Histórico</b></a></li>
+    {% endif %}
+
+    <li><a href="{% url 'alterar_senha' %}"><b><i class="fas fa-key"></i> Alterar senha</b></a></li>
+    <li><a style="color: #8f2727;" href="{% url 'logout' %}"><b><i style="color: #8f2727;" class="fas fa-sign-out-alt"></i> Sair</b></a></li>
+{% endblock nav_bar %}
+
+
+{% block main_content %}
+    <div class="main-content-container">
+        <div class="welcome-text">
+            <h2>Bem vindo ao sistema, 
+                {% if usuario.cargo == "Oficial_comandante" %}Oficial Comandante
+                {% else %} {{usuario.cargo}}
+                {% endif %} {{usuario.nome}}
+            </h2>
+            <p>Este sistema foi desenvolvido para otimizar o controle e gestão das suas anotações e relatórios. Utilize o menu de navegação para acessar suas funções.</p>
+        </div>
+        <div class="logo-container">
+            <img src="{% static 'anotacao/img/logo.png' %}" alt="Logo" class="logo">
+        </div>
+    </div>
+</body>
+</html>
+{% endblock main_content %}

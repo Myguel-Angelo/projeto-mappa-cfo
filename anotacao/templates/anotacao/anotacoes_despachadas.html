@@ -1,0 +1,85 @@
+{% extends "anotacao/home.html" %}
+
+{% block title %}{{ block.super }}Anotações Despachadas{% endblock title %}
+{% block includes %}
+    {{ block.super }}
+    <script>
+        function confirmarExportacao() {
+            // Confirmação antes de exportar
+            return confirm('Tem certeza de que deseja exportar as anotações despachadas para um arquivo Excel?');
+        }
+    </script>
+{% endblock includes %}
+
+{% block link_style %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static "anotacao/css/arquivo.css" %}">
+{% endblock link_style %}
+
+{% block nav_bar %}
+    {{ block.super }}
+{% endblock nav_bar %}
+
+{% block main_content %}
+    <div class="arquivo-anotacoes-container">
+
+        <h2 class="titulo-principal">Exportar Anotações Despachadas</h2>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if anotacoes_despachadas %}
+            <form method="post" id="exportarForm" onsubmit="return confirmarExportacao();">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="nome_arquivo">Nome do Arquivo:</label>
+                    <input type="text" id="nome_arquivo" name="nome_arquivo" placeholder="Digite o nome do arquivo" required>
+                </div>
+
+                <button type="submit" class="btn-exportar">Exportar para Excel</button>
+            </form>
+        {% endif %}
+
+        <h3 class="sub-titulo">Vizualização do arquivo</h3>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Turma</th>
+                        <th>Cadete</th>
+                        <th>Motivo</th>
+                        <th>Tipo Despacho</th>
+                        <th>Ass. Ciência</th>
+                        <th>Data Cumprimento</th>
+                        <th>Ass. Cumprimento</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for anotacao in anotacoes_despachadas %}
+                    <tr>
+                        <td>{{ anotacao.cadete_anotado.turma.turma }}</td>
+                        <td>{{ anotacao.cadete_anotado.numerica }} - {{ anotacao.cadete_anotado.nome }}</td>
+                        <td>
+                            Anotado Negativamente por {{ anotacao.criado_por.cargo }} {{ anotacao.criado_por.nome }} em {{ anotacao.criada_em|date:"d/m/Y H:i" }}. Motivo: {{ anotacao.motivo }}
+                        </td>
+                        <td>{{ anotacao.despacho }} - {{ anotacao.data_cumprimento|date:"d/m/Y" }}</td>
+                        <td></td>
+                        <td>__/__/____</td>
+                        <td></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7">Nenhuma anotação despachada encontrada.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock main_content %}

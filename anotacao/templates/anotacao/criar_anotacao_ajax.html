@@ -1,0 +1,61 @@
+<div class="modal-header">
+    <h2>Anotar {{ cadete_anotado.nome }}</h2>
+</div>
+
+<div class="modal-body">
+    <form method="post" id="anotacaoForm">
+        {% csrf_token %}
+        {{ form.as_p }} <!-- Exibe o formulário de forma padronizada (com campos e labels) -->
+
+        <button type="submit" class="btn-submit">Salvar Anotação</button>
+    </form>
+</div>
+
+<script>
+    // Função para atualizar o placeholder dinamicamente
+    function atualizarObservacao() {
+        const tipoAnotacao = document.getElementById('id_tipo_anotacao').value;  // Campo do tipo de anotação
+        const motivo = document.getElementById('id_motivo');  // Campo de motivo
+
+        // Define o placeholder padrão
+        let placeholderTexto = "Escreva somente o motivo";
+
+        // Verifica se o cargo do usuário e a permissão são adequados
+        {% if usuario.cargo == 'Cadete' and usuario.permissao_anotar %}
+            if (tipoAnotacao === 'positiva') {
+                placeholderTexto = "OBS: lance a anotação no nome de algum oficial. Escreva o motivo ao lado";
+            } else {
+                placeholderTexto = "Escreva o motivo ao lado";
+            }
+        {% endif %}
+
+        // Define o placeholder no campo de motivo
+        motivo.placeholder = placeholderTexto;
+    }
+
+    // Chama a função ao carregar o modal e ao mudar a seleção de tipo de anotação
+    $(document).ready(function() {
+        atualizarObservacao();  // Chama a função ao abrir o modal
+
+        // Atualiza o placeholder sempre que o tipo de anotação mudar
+        $('#id_tipo_anotacao').on('change', atualizarObservacao);
+    });
+
+    // Submeter o formulário via AJAX
+    $('#anotacaoForm').on('submit', function(event) {
+        event.preventDefault();  // Prevenir o recarregamento da página
+
+        $.ajax({
+            url: "{% url 'criar_anotacao_ajax' %}?cadete_id={{ cadete_anotado.id }}",  // Enviar com o ID do cadete
+            type: 'POST',
+            data: $(this).serialize(),  // Serializa o formulário
+            success: function(response) {
+                if (response.success) {
+                    $('#modalAnotacao').hide();  // Fechar o modal
+                } else {
+                    $('#modal-body').html(response.html_form);  // Atualizar o modal com erros, se houver
+                }
+            }
+        });
+    });
+</script>

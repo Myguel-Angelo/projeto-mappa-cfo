@@ -1,0 +1,61 @@
+/* Estilos para o bloco main-content */
+.main-content-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Duas colunas de tamanho igual */
+    gap: 2rem; /* Espaço entre as colunas */
+    align-items: center; /* Centraliza verticalmente os itens */
+    padding: 2rem;
+    background-color: #efefef; /* Ajuste conforme necessário */
+    border-radius: 1rem; /* Cantos arredondados */
+}
+
+/* Estilos para o texto de boas-vindas */
+.welcome-text h2 {
+    font-size: 3rem; /* Texto grande para o título */
+    color: #134157;
+    margin-bottom: 2.5rem;
+}
+
+.welcome-text p {
+    font-size: 1.5rem; /* Texto grande para o parágrafo */
+    color: #333; /* Ajuste a cor conforme necessário */
+    line-height: 1.5;
+}
+
+.logo-container {
+    display: flex;
+    justify-content: end;
+}
+
+/* Estilos para a logo/foto */
+.logo-container .logo {
+    width: 100%;
+    max-width: 30rem; /* Limita o tamanho máximo da imagem */
+    height: auto;
+    margin-right: 3rem;
+}
+
+/* Responsividade - Ajusta para telas menores */
+@media (max-width: 768px) {
+    .main-content-container {
+        grid-template-columns: 1fr; /* Em telas menores, o layout será de uma coluna */
+    }
+
+    .welcome-text h2 {
+        font-size: 2.5rem; /* Ajusta o tamanho do título em telas pequenas */
+    }
+
+    .welcome-text p {
+        font-size: 1.3rem; /* Ajusta o tamanho do parágrafo em telas pequenas */
+    }
+
+    .logo-container {
+        justify-content: center;
+    }
+
+    .logo-container .logo {
+        padding-top:1rem;
+        max-width: 25rem; /* Ajusta o tamanho máximo da imagem em telas pequenas */
+        margin-right: 0;
+    }
+}

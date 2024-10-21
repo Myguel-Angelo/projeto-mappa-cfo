@@ -1,0 +1,53 @@
+{% extends "anotacao/home.html" %}
+
+{% block title %}{{ block.super }}Histórico Despacho{% endblock title %}
+
+{% block includes %}{{ block.super }}{% endblock includes %}
+
+{% block link_style %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static "anotacao/css/historico.css" %}">
+{% endblock link_style %}
+
+{% block nav_bar %}
+    {{ block.super }}
+{% endblock nav_bar %}
+
+{% block main_content %}
+<div class="arquivo-anotacoes-container">
+    <h2 class="titulo-principal">Histórico de Despachos Exportados</h2>
+
+    <!-- Verifica se há arquivos exportados e exibe o botão de limpar -->
+    {% if arquivos_exportados %}
+    <form method="post" onsubmit="return confirm('Tem certeza que deseja limpar o histórico? Esta ação não pode ser desfeita.')">
+        {% csrf_token %}
+        <button type="submit" name="limpar_historico" class="btn-danger">Limpar Histórico</button>
+    </form>
+    {% endif %}
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome do Arquivo</th>
+                    <th>Data de Exportação</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for arquivo in arquivos_exportados %}
+                <tr>
+                    <td>{{ arquivo.nome_arquivo }}</td>
+                    <td>{{ arquivo.data_exportacao|date:"d/m/Y H:i" }}</td>
+                    <td><a href="{{ arquivo.arquivo.url }} " class="btn-baixar" download>Baixar</a></td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3">Nenhum arquivo exportado encontrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock main_content %}

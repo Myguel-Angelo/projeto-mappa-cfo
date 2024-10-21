@@ -1,0 +1,99 @@
+{% extends "anotacao/home.html" %}
+
+{% block title %}{{ block.super }}Cadetes{% endblock title %}
+{% block includes %}
+    {{ block.super }}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% endblock includes %}
+
+{% block link_style %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static "anotacao/css/relacao_cadetes.css" %}">
+    <link rel="stylesheet" href="{% static 'anotacao/css/anotar.css' %}">
+{% endblock link_style %}
+
+{% block nav_bar %}
+    {{ block.super }}
+{% endblock nav_bar %}
+
+{% block main_content %}
+    <div class="cadetes-container">
+        <h2 class="titulo-principal">Lista de Cadetes</h2>
+
+        <!-- Formulário de filtro centralizado -->
+        <form method="get" class="filter-form">
+            <label for="turma">Filtrar por Turma:</label>
+            <select name="turma" id="turma">
+                <option value="">Todas</option>
+                {% for turma in turmas %}
+                    <option value="{{ turma.id }}" {% if turma.id|stringformat:"s" == turma_selecionada %}selected{% endif %}>
+                        {{ turma.turma }}
+                    </option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="filter-btn">Filtrar</button>
+        </form>
+
+        <!-- Tabela centralizada e estilizada -->
+        <div class="table-wrapper">
+            <table class="cadetes-table">
+                <thead>
+                    <tr>
+                        <th>Cadete</th>
+                        <th>Turma</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cadete in cadetes %}
+                        <tr>
+                            <td>{{ cadete.numerica }} {{ cadete.nome }}</td>
+                            <td>{{ cadete.turma.turma }}</td>
+                            <td>
+                                <button class="anotar-btn" data-cadete-id="{{ cadete.id }}">Anotar</button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal para criar anotação -->
+    <div id="modalAnotacao" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span style="cursor: pointer;" class="close">&times;</span>
+            <div id="modal-body">
+                <!-- O formulário será carregado aqui -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Quando o botão de anotação for clicado
+            $('.anotar-btn').on('click', function() {
+                const cadeteId = $(this).data('cadete-id');
+        
+                // Fazer uma requisição AJAX para carregar o formulário
+                $.get("{% url 'criar_anotacao_ajax' %}", { cadete_id: cadeteId }, function(response) {
+                    $('#modal-body').html(response.html_form);  // Inserir o formulário no modal
+                    $('#modalAnotacao').show();  // Exibir o modal
+            
+                    // Certificar-se de que o fundo é desfocado
+                    $('body').css('overflow', 'hidden');  // Impede o scroll enquanto o modal está aberto
+                }).fail(function() {
+                    console.error("Falha ao carregar o formulário.");
+                });
+            });
+        
+            // Fechar o modal
+            $('.close').on('click', function() {
+                $('#modalAnotacao').hide();
+                $('body').css('overflow', 'auto');  // Restaurar o scroll da página
+            });
+        });        
+    </script>
+</body>
+</html>
+{% endblock main_content %}

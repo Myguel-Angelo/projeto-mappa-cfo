@@ -1,0 +1,97 @@
+/* Estilo do modal */
+.modal {
+    display: none; /* Oculto por padrão */
+    position: fixed;
+    z-index: 1000; /* Colocar o modal acima de tudo */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Fundo semitransparente */
+    backdrop-filter: blur(8px); /* Desfoca o fundo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-header h2 {
+    color: #333;
+    font-size: 1.8rem;
+}
+
+/* Estilo do conteúdo do modal */
+.modal-content {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    max-width: 60rem;
+    width: 100%;
+    position: relative;
+    margin: 2rem;
+}
+
+/* Estilo para o botão de fechar o modal */
+.close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 2rem;
+    color: #333;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #ff0000;
+}
+
+/* Estilo para o formulário no modal */
+.modal-body {
+    margin-top: 2rem;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 1rem 2rem;
+    font-size: 1.6rem;
+    background-color: #134157;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+.btn-submit:hover {
+    background-color: #0e3242;
+}
+.form-control {
+    padding: 10px;
+    border: 1px solid #d1d1d1;
+    border-radius: 4px;
+    width: 100%;
+    font-size: 16px;
+    background-color: #ffffff;
+    color: #333;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #134157;
+    outline: none;
+}
+
+/* Estilos para o textarea */
+textarea.form-control {
+    resize: none;  /* Remove a opção de redimensionar */
+}
+
+/* Estilo para os labels */
+label {
+    font-size: 1.6rem;
+    color: #134157;
+    font-weight: bold;
+    margin: 1rem 0.5rem;
+    display: block;  /* Certifica-se de que o label fica em uma linha separada */
+}

@@ -1,0 +1,176 @@
+/* Reset geral e configurações base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --gap: 3rem;
+    --primary-color: #134157;
+    --secundary-color: #efefef;
+    --light-gray-color: #dddddd;
+    --shadow-color: rgba(0, 0, 0, 0.5); /* Cor da sombra */
+}
+
+html {
+    font-size: 62.5%;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+body {
+    font-family: "Open Sans", sans-serif;
+    background: linear-gradient(45deg, #134157, #1b5f7e);
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estilo para a barra de navegação superior */
+.menu {
+    background: var(--secundary-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    border-bottom: 0.1rem solid var(--light-gray-color);
+    z-index: 10; /* Certifique-se de que a barra esteja acima do conteúdo */
+}
+
+.menu-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 var(--gap);
+}
+
+.nav-content {
+    max-width: 120rem;
+    margin: 0 auto;
+}
+
+.menu h1 {
+    font-size: 2.3rem;
+}
+
+.menu h1 a {
+    display: block;
+    transition: transform 300ms ease-in-out;
+    color: var(--primary-color);
+}
+.menu h1 a:hover{
+    transform: scale(1.1);
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+}
+
+.nav-links li a {
+    display: block;
+    color: var(--primary-color);
+    padding: 1.8rem 2rem;
+    font-size: 1.6rem;
+    position: relative;
+}
+
+.nav-links li a::after {
+    content: '';
+    position: absolute;
+    bottom: 0.7rem;
+    left: 50%;
+    width: 0;
+    height: 0.2rem;
+    background: #037212;
+    transition: all 300ms ease-in-out;
+}
+
+.nav-links li a:hover::after {
+    width: 100%;
+    left: 0;
+}
+
+.nav-links li a i{
+    margin-right: 0.25rem; /* Espaço entre o ícone e o texto */
+    font-size: 1.45rem; /* Tamanho dos ícones */
+    color: var(--primary-color); /* Cor dos ícones */
+}
+
+.menu-toggle {
+    display: none;
+    font-size: 3rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--primary-color);
+}
+
+/* Estilo da região central flutuante */
+.main-content {
+    max-width: 120rem;
+    width: auto;
+    background: var(--secundary-color);
+    padding: 3rem;
+    margin: 10rem auto; /* Espaçamento superior para descer a partir da barra de navegação */
+    border-radius: 1.5rem; /* Cantos arredondados */
+    box-shadow: 0 4px 10px var(--shadow-color); /* Sombra suave */
+    position: relative;
+    z-index: 1; /* Certifica que fique acima da barra */
+}
+
+/* Ajusta o layout para telas pequenas */
+/* Responsividade: Em telas menores que 900px */
+@media (max-width: 950px) {
+    /* Altera o layout da barra de navegação */
+    .menu-content {
+        flex-direction: column;
+    }
+
+    /* Mostra o botão de hambúrguer */
+    .menu-toggle {
+        position: absolute;
+        left: 0;
+        display: block;
+        padding: 2rem;
+        font-size: 2.5rem;
+    }
+    .menu {
+        display: flex;
+        justify-content: center;
+    }
+    .menu h1 {
+        font-size: 2.8rem;
+        padding: 2rem 0;
+        text-align: center;
+    }
+
+    /* O menu começa escondido */
+    .nav-links {
+        flex-direction: column;
+        width: 100%;
+        gap: 0; /* Remover o espaço entre os itens */
+        background-color: var(--secundary-color);
+        overflow: hidden;
+        max-height: 0;
+        transition: all 400ms ease-in-out; /* Animação suave */
+    }
+
+    /* Altera o estilo dos itens do menu para ficarem um abaixo do outro */
+    .nav-links li {
+        width: 100%;
+        text-align: center; 
+    }
+
+    /* Quando o menu está aberto */
+    .nav-links.show {
+        display: flex;
+        max-height: 500px; /* Expande suavemente */
+    }
+}
