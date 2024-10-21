@@ -85,6 +85,10 @@
     font-size: 1.6rem;
 }
 
+.cadetes-table td {
+    text-align: left;
+}
+
 /* Ajuste da coluna de Ações */
 .cadetes-table td:last-child {
     width: 1%; /* Garante que a coluna de ações ocupe o mínimo possível */
