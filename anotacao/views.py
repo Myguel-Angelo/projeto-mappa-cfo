@@ -246,7 +246,7 @@ def anotacoes_despachadas_view(request):
         return redirect('home')
 
     # Obter anotações despachadas
-    anotacoes_despachadas = Anotacao.objects.filter(status='despachada').order_by('cadete_anotado__numerica')
+    anotacoes_despachadas = Anotacao.objects.filter(status='despachada').order_by('cadete_anotado__turma', 'cadete_anotado__numerica')
 
     # Se o comandante submeter o formulário para exportar
     if request.method == 'POST':
