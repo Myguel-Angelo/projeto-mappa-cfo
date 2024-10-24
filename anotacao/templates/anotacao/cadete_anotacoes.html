@@ -24,7 +24,7 @@
                 <ul class="anotacoes-lista">
                     {% for anotacao in anotacoes_notificadas %}
                     <li class="anotacao-item" data-tipo="{{ anotacao.tipo_anotacao }}">
-                        Anotado 
+                        Lançado 
                         {% if anotacao.tipo_anotacao == 'positiva' %}
                             Positivamente
                         {% else %}
@@ -36,8 +36,7 @@
                         {% else %}
                             {{ anotacao.criado_por.cargo }}
                         {% endif %} 
-                        {{ anotacao.criado_por.nome }},
-                        Data e Hora: {{ anotacao.criada_em|date:"d/m/Y H:i" }}.
+                        {{ anotacao.criado_por.nome }} às {{ anotacao.criada_em|date:"d/m/Y H:i" }}.
                         Motivo: {{ anotacao.motivo }}.
                     </li>
                     {% empty %}
@@ -55,18 +54,23 @@
                 <ul class="anotacoes-lista">
                     {% for anotacao in anotacoes_despachadas %}
                     <li class="anotacao-item" data-tipo="{{ anotacao.tipo_anotacao }}">
-                        Anotado 
+                        Lançado 
                         {% if anotacao.tipo_anotacao == 'positiva' %}
                             Positivamente
                         {% else %}
                             Negativamente
                         {% endif %}
-                        por {{ anotacao.criado_por.cargo }} {{ anotacao.criado_por.nome }},
-                        Data e Hora: {{ anotacao.criada_em|date:"d/m/Y H:i" }}.
-                        Motivo: {{ anotacao.motivo }}.
+                        por 
+                        {% if anotacao.criado_por.cargo == 'Oficial_comandante' %}
+                            Oficial Comandante
+                        {% else %}
+                            {{ anotacao.criado_por.cargo }}
+                        {% endif %} 
+                        {{ anotacao.criado_por.nome }} às {{ anotacao.criada_em|date:"d/m/Y H:i" }}.
+                        Motivo: {{ anotacao.motivo }}
                         <br>
-                        Despachada por Oficial Comandante {{ anotacao.despachado_por.nome }},
-                        O Cadete irá cumprir: {{ anotacao.despacho }}.
+                        Despachada por Oficial Comandante {{ anotacao.despachado_por.nome }}. 
+                        A Punição é: {{ anotacao.despacho }}. Data de Cumprimento: {{ anotacao.data_cumprimento }} 
                     </li>
                     {% empty %}
                     <li class="anotacao-vazia">Nenhuma anotação despachada.</li>
